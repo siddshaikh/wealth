@@ -17,7 +17,9 @@ export default function RootLayout({ children }) {
         <body className={`${inter.className}`}>
           {/* header */}
           <Header />
+
           <main className="min-h-screen">{children}</main>
+
           <Toaster richColors />
           {/* footer */}
           <footer className="bg-blue-50 py-12">

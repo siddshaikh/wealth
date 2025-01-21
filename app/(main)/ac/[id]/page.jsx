@@ -1,8 +1,8 @@
 import { getAccountWithTransactions } from "@/actions/accounts";
 import NotFound from "@/app/not-found";
 import React, { Suspense } from "react";
-import TransactionTable from "../_components/TransactionTable";
 import { BarLoader } from "react-spinners";
+import TransactionTable from "../_components/TransactionTable";
 
 const AccountPage = async ({ params }) => {
   const accountData = await getAccountWithTransactions(params.id);
@@ -10,7 +10,6 @@ const AccountPage = async ({ params }) => {
     return NotFound();
   }
   const { transactions, ...account } = accountData;
-  console.log(transactions);
 
   return (
     <div className="space-y-8 px-5">
