@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
