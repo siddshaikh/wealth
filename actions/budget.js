@@ -1,4 +1,5 @@
 "use server";
+
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -6,18 +7,23 @@ import { revalidatePath } from "next/cache";
 export async function getCurrentBudget(accountId) {
   try {
     const { userId } = await auth();
-
     if (!userId) throw new Error("Unauthorized");
 
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
-    if (!user) throw new Error("User not found");
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const budget = await db.budget.findFirst({
       where: {
         userId: user.id,
       },
     });
+
+    // Get current month's expenses
     const currentDate = new Date();
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -29,6 +35,7 @@ export async function getCurrentBudget(accountId) {
       currentDate.getMonth() + 1,
       0
     );
+
     const expenses = await db.transaction.aggregate({
       where: {
         userId: user.id,
@@ -43,6 +50,7 @@ export async function getCurrentBudget(accountId) {
         amount: true,
       },
     });
+
     return {
       budget: budget ? { ...budget, amount: budget.amount.toNumber() } : null,
       currentExpenses: expenses._sum.amount
@@ -51,6 +59,7 @@ export async function getCurrentBudget(accountId) {
     };
   } catch (error) {
     console.error("Error fetching budget:", error);
+    throw error;
   }
 }
 
@@ -62,7 +71,10 @@ export async function updateBudget(amount) {
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
+
     if (!user) throw new Error("User not found");
+
+    // Update or create budget
     const budget = await db.budget.upsert({
       where: {
         userId: user.id,
@@ -75,10 +87,11 @@ export async function updateBudget(amount) {
         amount,
       },
     });
-    revalidatePath("my-dashboard");
+
+    revalidatePath("/my-dashboard");
     return {
       success: true,
-      data: { ...budget, amount: budget.amount.toNumber(2) },
+      data: { ...budget, amount: budget.amount.toNumber() },
     };
   } catch (error) {
     console.error("Error updating budget:", error);
