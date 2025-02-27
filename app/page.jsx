@@ -102,7 +102,7 @@ export default function LandingPage() {
             Join thousands of user who already managing their finances smarter
             with wealth.
           </p>
-          <Link href="/dashboard">
+          <Link href="/my-dashboard">
             <Button
               size="lg"
               className="bg-white text-blue-600 hover:bg-blue-50 animate-bounce"

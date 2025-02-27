@@ -357,9 +357,10 @@ const TransactionTable = ({ transactions: allTransactions }) => {
                         <DropdownMenuLabel
                           onClick={() =>
                             router.push(
-                              `/transaction/create?edit=${transaction.id}`
+                              `/my-transactions/create?edit=${transaction.id}`
                             )
                           }
+                          className="cursor-pointer"
                         >
                           Edit
                         </DropdownMenuLabel>
