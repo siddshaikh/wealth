@@ -4,7 +4,7 @@ import AddTransactionForm from "../_components/AddTransactionForm";
 import { defaultCategories } from "@/data/categories";
 import { getTransaction } from "@/actions/transaction";
 
-const CreateTransactions = async ({ searchParams }) => {
+export default async function CreateTransactions({ searchParams }) {
   const accounts = await getAccount();
   const editId = searchParams?.edit;
   let initialData = null;
@@ -25,6 +25,4 @@ const CreateTransactions = async ({ searchParams }) => {
       />
     </div>
   );
-};
-
-export default CreateTransactions;
+}

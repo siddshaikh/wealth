@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subset: ["latin"], preload: true });
+const inter = Inter({ subsets: ["latin"], preload: true });
 export const metadata = {
   title: "Wealth",
   description: "Finance platform",
